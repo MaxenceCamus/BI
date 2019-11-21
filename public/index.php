@@ -25,3 +25,14 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+/*// tous d'abord il faut démarrer le système de sessions
+session_start();
+
+// Si la session de l'admin est actif, on va diréger vers son page
+if(isset($_SESSION['id_admin'])){
+    header('location:admin_page.php');
+}
+else if(isset($_SESSION['id_user'])){
+    header('location:user_page.php');
+}*/

@@ -704,7 +704,7 @@
         },
         series: {
           regions: [{
-            scale: ['#2d99ff'],
+            scale: ['#12af0f'],
             normalizeFunction: 'polynomial',
             values: {
               "AF": 16.63,

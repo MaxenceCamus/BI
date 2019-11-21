@@ -423,7 +423,6 @@ $(function () {
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        legend: false,
         categoryPercentage: 0.5,
         stacked: true,
         layout: {
@@ -918,7 +917,6 @@ $(function () {
         ]
       },
       options: {
-        legend: false,
         scales: {
           xAxes: [{
             gridLines: {
