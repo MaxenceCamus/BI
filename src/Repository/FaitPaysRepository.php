@@ -19,6 +19,13 @@ class FaitPaysRepository extends ServiceEntityRepository
         parent::__construct($registry, FaitPays::class);
     }
 
+    public function test(){
+        $this->createQueryBuilder('p')
+            ->select('p.id, p.total_valeur')
+            ->innerJoin('p.pays_id', 'pays')
+            ->andWhere('pays = 1');
+    }
+
     // /**
     //  * @return FaitPays[] Returns an array of FaitPays objects
     //  */
