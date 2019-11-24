@@ -14,6 +14,7 @@ class KpiCommerciauxController extends AbstractController
     {
         return $this->render('kpi_commerciaux/index.html.twig', [
             'controller_name' => 'KpiCommerciauxController',
+            //test
         ]);
     }
 }
