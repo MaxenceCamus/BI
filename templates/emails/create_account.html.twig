@@ -1,0 +1,3 @@
+<h1>Bonjour {{ username }}</h1>
+<p>Un compte a été créé pour vous sur {{ site_name }}</p>
+<p>Merci de cliquer sur <a href="{{ url('finalize_registration', {'token' : token, 'serialized_email' : serializedEmail}) }}">ce lien</a> pour finaliser la création de votre compte.</p>
