@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Dashboard{% endblock %}</title>
@@ -14,27 +14,25 @@
         <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+
+        <style>
+            canvas {
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+        </style>
+
         {% block stylesheets %}{% endblock %}
-        {% block javascript %}
-            <script src="../node_modules/chartjs-funnel/dist/chart.funnel.bundled.js"></script>
-            <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-            <style>
-                canvas {
-                    -moz-user-select: none;
-                    -webkit-user-select: none;
-                    -ms-user-select: none;
-                }
-            </style>
-        {% endblock %}
     </head>
     <body>
         <div class="container-scroller">
             <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-                    <a class="navbar-brand brand-logo" href="index.html">
+                    <a class="navbar-brand brand-logo" href="{{ path('index') }}">
                         <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" />
                     </a>
-                    <a class="navbar-brand brand-logo-mini" href="index.html">
+                    <a class="navbar-brand brand-logo-mini" href="{{ path('index') }}">
                         <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
                     </a>
                 </div>
@@ -191,6 +189,7 @@
             </div>
         </div>
 
+        <script src="{{ asset('assets/js/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
         <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
 
@@ -199,7 +198,7 @@
 
         <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
         <script src="{{ asset('assets/js/shared/chart.js') }}"></script>
-        <script src="{{ asset('../node_modules/chartjs-funnel/src/chart.funnel.js') }}"></script>
+        <script src="{{ asset('assets/js/chart.funnel.js') }}"></script>
 
         {% block javascripts %}{% endblock %}
     </body>
