@@ -12,7 +12,9 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        $test = "test";
+        if($this->getUser()){
+            return $this->redirectToRoute('kpi_generaux');
+        }
         return $this->render('index/index.html.twig');
     }
 }
