@@ -16,7 +16,7 @@ class KpiGenerauxController extends AbstractController
     public function index()
     {
         $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
-        return $this->redirectToRoute('kpi_generaux_by_year', [
+        return $this->redirectToRoute('kpi_generaux_by_year_id', [
             'id' => $annees[0]->getId()
         ]);
     }
@@ -31,7 +31,8 @@ class KpiGenerauxController extends AbstractController
         $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
         $valuebycountries = $this->getDoctrine()->getRepository(FaitPays::class)->findValuesByCountry($annee->getYear());
         $valuespipeline = $this->getDoctrine()->getRepository(FaitPipeline::class)->valuespipeline($annee->getYear());
-        //dump($valuespipeline);die;
+//        dump($valuespipeline);die;
+
         $code_pays = [
             "AF"=>0,
             "AL"=>0,

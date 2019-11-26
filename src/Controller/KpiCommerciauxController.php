@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DimensionCommercial;
+use App\Entity\FaitPerfCom;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -29,9 +30,13 @@ class KpiCommerciauxController extends AbstractController
         $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findBy([], ['nom' => 'ASC']);
         $commercial = $this->getDoctrine()->getRepository(DimensionCommercial::class)->find($id);
 
+
+        $perfsPerYear = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfVendeurByYear($commercial->getId());
+
         return $this->render('kpi_commerciaux/index.html.twig', [
             'commerciaux' => $commerciaux,
-            'commercial' => $commercial
+            'commercial' => $commercial,
+            'perfsPerYear' => $perfsPerYear
         ]);
     }
 }

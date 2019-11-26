@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello KpiGenerauxController!{% endblock %}
+{% block title %}Indicateurs généraux - {% endblock %}
 
 {% block filtres %}
     <div class="filter-wrapper">
@@ -77,47 +77,6 @@
                 <div id="canvas-holder" style="width:400px;">
                     <canvas id="chart-area" height="250"></canvas>
                 </div>
-                <script>
-                    var config = {
-                        type: 'funnel',
-                        data: {
-                            datasets: [{
-                                data: [{% for valuepipeline in valuespipeline %}{{ valuepipeline.total_valeur }},{% endfor %}],
-                                backgroundColor: [
-                                    "#FF6384",
-                                    "#36A2EB",
-                                    "#FFCE56"
-                                ],
-                                hoverBackgroundColor: [
-                                    "#FF6384",
-                                    "#36A2EB",
-                                    "#FFCE56"
-                                ]
-                            }],
-                            labels: [
-                                "50%",
-                                "80%",
-                                "100%"
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            sort: 'desc',
-                            legend: {
-                                position: 'top'
-                            },
-                            animation: {
-                                animateScale: true,
-                                animateRotate: true
-                            }
-                        }
-                    };
-
-                    window.onload = function() {
-                        var ctx = document.getElementById("chart-area").getContext("2d");
-                        window.myDoughnut = new Chart(ctx, config);
-                    };
-                </script>
             </div>
         </div>
         <div class="col-md-6 grid-margin">
@@ -433,6 +392,50 @@
     </div>-->
 {% endblock %}
 
+{% block javascripts %}
+    <script>
+        var config = {
+            type: 'funnel',
+            data: {
+                datasets: [{
+                    data: [{% for valuepipeline in valuespipeline %}{{ valuepipeline.total_valeur }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ]
+                }],
+                labels: [
+                    "50%",
+                    "80%",
+                    "100%"
+                ]
+            },
+            options: {
+                responsive: true,
+                sort: 'desc',
+                legend: {
+                    position: 'top'
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            window.myDoughnut = new Chart(ctx, config);
+        };
+    </script>
+{% endblock %}
+
 {% block valuebycountries %}
     {% for key, valuebycountry in valuebycountries %}
         {{ key }}: {{ valuebycountry }},
@@ -440,7 +443,5 @@
 {% endblock %}
 
 {% block valuebycountry %}
-
     {{ valuebycountries }}
 {% endblock %}
-

@@ -50,10 +50,10 @@ class FaitPipelineRepository extends ServiceEntityRepository
     public function valuespipeline($year)
     {
         return $this->createQueryBuilder('p')
-            ->addSelect('p.total_valeur','p.prb')
-            ->andWhere('p.year = :y')
-            ->setParameter('y', $year)
+            ->addSelect('SUM(p.total_valeur) as total_valeur','p.prb')
             ->groupBy('p.prb')
+            ->where('p.year = :y')
+            ->setParameter('y', $year)
             ->getQuery()
             ->getResult();
     }

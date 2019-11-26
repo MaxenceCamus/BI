@@ -19,6 +19,16 @@ class FaitPerfComRepository extends ServiceEntityRepository
         parent::__construct($registry, FaitPerfCom::class);
     }
 
+    public function getPerfVendeurByYear($id_vendeur){
+        return $this->createQueryBuilder('f')
+            ->select('SUM(f.total_vente) as total, f.year')
+            ->groupBy('f.year')
+            ->where('f.groupe_vendeur = :id_vendeur')
+            ->setParameter('id_vendeur', $id_vendeur)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return FaitPerfCom[] Returns an array of FaitPerfCom objects
     //  */
