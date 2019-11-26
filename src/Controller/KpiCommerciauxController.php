@@ -15,9 +15,9 @@ class KpiCommerciauxController extends AbstractController
      */
     public function index()
     {
-        $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findAll();
-        return $this->render('kpi_commerciaux/index.html.twig', [
-            'commerciaux' => $commerciaux
+        $commercial = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findBy([], ['nom' => 'ASC'], [1]);
+        return $this->redirectToRoute('kpi_commerciaux_by_id', [
+            'id' => $commercial[0]->getId()
         ]);
     }
 
@@ -26,23 +26,12 @@ class KpiCommerciauxController extends AbstractController
      */
     public function commercial($id)
     {
-        $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findAll();
+        $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findBy([], ['nom' => 'ASC']);
         $commercial = $this->getDoctrine()->getRepository(DimensionCommercial::class)->find($id);
 
         return $this->render('kpi_commerciaux/index.html.twig', [
-            'commerciaux' => $commerciaux
+            'commerciaux' => $commerciaux,
+            'commercial' => $commercial
         ]);
-    }
-
-    /**
-     * @param $id
-     * @Route("/ajax/kpi/commerciaux/get-single-commercial", name="get_commercial_stats")
-     */
-    public function getCommercialStats(Request $request){
-        if ($request->isXmlHttpRequest()){
-            return $this->render('kpi_commerciaux/stats_single.html.twig');
-        }else{
-            throw new BadRequestHttpException();
-        }
     }
 }
