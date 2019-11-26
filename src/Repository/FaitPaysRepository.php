@@ -54,4 +54,14 @@ class FaitPaysRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findValuesByCountry()
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('p.total_valeur','pays.code_pays')
+            ->innerJoin('p.pays','pays')
+            ->groupBy('p.pays')
+            ->getQuery()
+            ->execute();
+    }
 }
