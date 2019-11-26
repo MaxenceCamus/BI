@@ -151,10 +151,12 @@ class AdministrationController extends AbstractController
             $user->setUsername($data['username']);
             $user->setUsernameCanonical($data['username']);
 
-            if($data['admin']){
-                $user->addRole('ROLE_ADMIN');
-            }else{
-                $user->removeRole('ROLE_ADMIN');
+            if(isset($data['admin'])) {
+                if ($data['admin']){
+                    $user->addRole('ROLE_ADMIN');
+                }else{
+                    $user->removeRole('ROLE_ADMIN');
+                }
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
