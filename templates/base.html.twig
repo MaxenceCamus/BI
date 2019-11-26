@@ -243,8 +243,7 @@
             });
         </script>
 
-        {% block javascripts %}
-            <script>
+        <script>
                 (function ($) {
                     'use strict';
                     $(function () {
@@ -1256,6 +1255,8 @@
                     });
                 })(jQuery);
             </script>
+        
+        {% block javascripts %}
         {% endblock %}
     </body>
 </html>

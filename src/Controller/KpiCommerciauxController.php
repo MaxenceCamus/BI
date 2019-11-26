@@ -22,6 +22,19 @@ class KpiCommerciauxController extends AbstractController
     }
 
     /**
+     * @Route("/kpi/commerciaux/{id}/", name="kpi_commerciaux_by_id")
+     */
+    public function commercial($id)
+    {
+        $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findAll();
+        $commercial = $this->getDoctrine()->getRepository(DimensionCommercial::class)->find($id);
+
+        return $this->render('kpi_commerciaux/index.html.twig', [
+            'commerciaux' => $commerciaux
+        ]);
+    }
+
+    /**
      * @param $id
      * @Route("/ajax/kpi/commerciaux/get-single-commercial", name="get_commercial_stats")
      */
