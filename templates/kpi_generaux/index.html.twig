@@ -3,10 +3,15 @@
 {% block title %}Hello KpiGenerauxController!{% endblock %}
 
 {% block filtres %}
-    <div class="btn-group toolbar-item" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary"><i class="mdi mdi-chevron-left"></i></button>
-        <button type="button" class="btn btn-secondary">2019</button>
-        <button type="button" class="btn btn-secondary"><i class="mdi mdi-chevron-right"></i></button>
+    <div class="filter-wrapper">
+        <div class="dropdown toolbar-item">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownsorting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Années</button>
+            <div id="list_annee" class="dropdown-menu" aria-labelledby="dropdownsorting">
+                {% for annee in annees %}
+                    <a class="dropdown-item" href="{{ path('kpi_generaux_by_year_id', { 'id' : annee.id }) }}">{{ annee.year }}</a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -77,7 +82,7 @@
                         type: 'funnel',
                         data: {
                             datasets: [{
-                                data: [10, 35, 90],
+                                data: [{% for valuepipeline in valuespipeline %}{{ valuepipeline.total_valeur }},{% endfor %}],
                                 backgroundColor: [
                                     "#FF6384",
                                     "#36A2EB",
@@ -90,9 +95,9 @@
                                 ]
                             }],
                             labels: [
-                                "Red",
-                                "Blue",
-                                "Yellow"
+                                "50%",
+                                "80%",
+                                "100%"
                             ]
                         },
                         options: {
@@ -100,10 +105,6 @@
                             sort: 'desc',
                             legend: {
                                 position: 'top'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Chart.js Funnel Chart'
                             },
                             animation: {
                                 animateScale: true,

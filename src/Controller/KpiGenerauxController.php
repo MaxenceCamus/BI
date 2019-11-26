@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\DimensionTemps;
 use App\Entity\FaitPays;
+use App\Entity\FaitPipeline;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,8 +15,23 @@ class KpiGenerauxController extends AbstractController
      */
     public function index()
     {
-        $valuebycountries = $this->getDoctrine()->getRepository(FaitPays::class)->findValuesByCountry();
+        $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
+        return $this->redirectToRoute('kpi_generaux_by_year', [
+            'id' => $annees[0]->getId()
+        ]);
+    }
 
+    /**
+     * @Route("/kpi/generaux/{id}", name="kpi_generaux_by_year_id")
+     */
+    public function year($id)
+    {
+        $annee = $this->getDoctrine()->getRepository(DimensionTemps::class)->find($id);
+
+        $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
+        $valuebycountries = $this->getDoctrine()->getRepository(FaitPays::class)->findValuesByCountry($annee->getYear());
+        $valuespipeline = $this->getDoctrine()->getRepository(FaitPipeline::class)->valuespipeline($annee->getYear());
+        //dump($valuespipeline);die;
         $code_pays = [
             "AF"=>0,
             "AL"=>0,
@@ -200,13 +217,15 @@ class KpiGenerauxController extends AbstractController
             "ZW"=>0
         ];
 
-         foreach ($valuebycountries as $valuebycountry) {
-             $code_pays[$valuebycountry['code_pays']] = $valuebycountry['total_valeur'];
-         }
+        foreach ($valuebycountries as $valuebycountry) {
+            $code_pays[$valuebycountry['code_pays']] = $valuebycountry['total_valeur'];
+        }
 
         return $this->render('kpi_generaux/index.html.twig', [
             'controller_name' => 'KpiGenerauxController',
             'valuebycountries' => $code_pays,
+            'annees' => $annees,
+            'valuespipeline' => $valuespipeline,
         ]);
     }
 }

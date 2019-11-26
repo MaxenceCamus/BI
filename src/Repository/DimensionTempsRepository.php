@@ -47,4 +47,13 @@ class DimensionTempsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function yearDistinct()
+    {
+        return $this->createQueryBuilder('p')
+            ->groupBy('p.year')
+            ->orderBy('p.year', 'desc')
+            ->getQuery()
+            ->execute();
+    }
 }

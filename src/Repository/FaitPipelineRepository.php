@@ -47,4 +47,14 @@ class FaitPipelineRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function valuespipeline($year)
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('p.total_valeur','p.prb')
+            ->andWhere('p.year = :y')
+            ->setParameter('y', $year)
+            ->groupBy('p.prb')
+            ->getQuery()
+            ->getResult();
+    }
 }

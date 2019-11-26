@@ -55,10 +55,12 @@ class FaitPaysRepository extends ServiceEntityRepository
     }
     */
 
-    public function findValuesByCountry()
+    public function findValuesByCountry($year)
     {
         return $this->createQueryBuilder('p')
             ->addSelect('p.total_valeur','pays.code_pays')
+            ->andWhere('p.year = :y')
+            ->setParameter('y', $year)
             ->innerJoin('p.pays','pays')
             ->groupBy('p.pays')
             ->getQuery()
