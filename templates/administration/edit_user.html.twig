@@ -1,17 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un utilisateur{% endblock %}
-{% block page_title %}Modifier un utilisateur{% endblock %}
+{% block title %}Modifier un utilisateur - {% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        {{ form_start(form) }}
-                        {{ form_end(form) }}
-                    </div>
+    <div class="row page-title-header">
+        <div class="col-12">
+            <div class="page-header">
+                <h2 class="page-title">Modifier un utilisateur</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>

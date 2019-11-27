@@ -177,15 +177,8 @@
                 <div class="main-panel">
                     <div class="content-wrapper">
                         <div class="container-fluid">
-                            <div class="row page-title-header">
-                                <div class="col-12">
-                                    <div class="page-header">
-                                        <h2 class="page-title">{% block page_title %}{% endblock %}</h2>
-                                    </div>
-                                </div>
-                            </div>
+                            {% block body %}{% endblock %}
                         </div>
-                        {% block body %}{% endblock %}
                     </div>
                     <footer class="footer">
                         <div class="container-fluid clearfix">
@@ -1108,27 +1101,6 @@
                                     }]
                                 },
                                 options: lineStatsOptions
-                            });
-                        }
-                        if ($('#dashboard-guage-chart').length) {
-                            var g3 = new JustGage({
-                                id: 'dashboard-guage-chart',
-                                value: 65,
-                                min: 0,
-                                max: 100,
-                                symbol: '%',
-                                pointer: true,
-                                gaugeWidthScale: 1,
-                                customSectors: [{
-                                    color: '#ff0000',
-                                    lo: 50,
-                                    hi: 100
-                                }, {
-                                    color: '#00ff00',
-                                    lo: 0,
-                                    hi: 50
-                                }],
-                                counter: true
                             });
                         }
                     });

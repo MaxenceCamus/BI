@@ -17,38 +17,40 @@
 
 {% block body %}
     <div class="row">
-        {#<div class="col-md-12 grid-margin">#}
-            {#<div class="card">#}
-                {#<div class="card-body">#}
-                    {#<div class="row">#}
-                        {#<div class="col-lg-4 col-md-6">#}
-                            {#<div class="d-flex">#}
-                                {#<div class="wrapper">#}
-                                    {#<h3 class="mb-0 font-weight-semibold">32 451 €</h3>#}
-                                    {#<h5 class="mb-0 font-weight-medium text-primary">Vente</h5>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                        {#<div class="col-lg-4 col-md-6 mt-md-0 mt-4">#}
-                            {#<div class="d-flex">#}
-                                {#<div class="wrapper">#}
-                                    {#<h3 class="mb-0 font-weight-semibold">100</h3>#}
-                                    {#<h5 class="mb-0 font-weight-medium text-primary">Commande</h5>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                        {#<div class="col-lg-4 col-md-6 mt-md-0 mt-4">#}
-                            {#<div class="d-flex">#}
-                                {#<div class="wrapper">#}
-                                    {#<h3 class="mb-0 font-weight-semibold">30%</h3>#}
-                                    {#<h5 class="mb-0 font-weight-medium text-primary">Ratio Devis/Commandes</h5>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
+        <div class="col-md-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">32 451 €</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Vente</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">100</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Commande</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">30%</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Ratio Devis/Commandes</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="col-md-8 grid-margin">
             <div class="card">
                 <div class="card-body">
@@ -112,6 +114,7 @@
                 {#</div>#}
             {#</div>#}
         {#</div>#}
+
         {#<div class="col-md-4 grid-margin stretch-card">#}
             {#<div class="card">#}
                 {#<div class="card-body d-flex flex-column">#}
@@ -124,28 +127,18 @@
                 {#</div>#}
             {#</div>#}
         {#</div>#}
-        {#<div class="col-md-8">#}
-            {#<div class="card">#}
-                {#<div class="card-body">#}
-                    {#<h1 class="card-title mb-4">Website Audience Metrics</h1>#}
-                    {#<div class="row mt-12">#}
-                        {#<div class="col-6">#}
-                            {#<div class="d-flex align-items-center mb-2">#}
-                                {#<div class="icon-holder bg-primary text-white py-1 px-3 rounded mr-2">#}
-                                    {#<i class="icon ion-logo-buffer icon-sm"></i>#}
-                                {#</div>#}
-                                {#<h2 class="font-weight-semibold mb-0">3,605</h2>#}
-                            {#</div>#}
-                            {#<p>Since last week</p>#}
-                            {#<p><span class="font-weight-medium">0.51%</span> (30 days)</p>#}
-                        {#</div>#}
-                        {#<div class="col-6">#}
-                            {#<div class="mt-n3 ml-auto" id="dashboard-guage-chart"></div>#}
-                        {#</div>#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
+
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title mb-4">Devis transformés</h1>
+                    <div class="mt-n3 ml-auto" id="devis_transformes-chart"></div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -239,6 +232,28 @@
                         }
                     }
                 }
+            });
+        }
+
+        if ($('#devis_transformes-chart').length) {
+            var g3 = new JustGage({
+                id: 'devis_transformes-chart',
+                value: {{ taux_trans }},
+                min: 0,
+                max: 100,
+                symbol: '%',
+                pointer: true,
+                gaugeWidthScale: 1,
+                customSectors: [{
+                    color: '#ff0000',
+                    lo: 50,
+                    hi: 100
+                }, {
+                    color: '#00ff00',
+                    lo: 0,
+                    hi: 50
+                }],
+                counter: true
             });
         }
     </script>

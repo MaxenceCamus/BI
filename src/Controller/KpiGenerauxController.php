@@ -226,6 +226,7 @@ class KpiGenerauxController extends AbstractController
             'controller_name' => 'KpiGenerauxController',
             'valuebycountries' => $code_pays,
             'annees' => $annees,
+            'annee' => $annee,
             'valuespipeline' => $valuespipeline,
         ]);
     }

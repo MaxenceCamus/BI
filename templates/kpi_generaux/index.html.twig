@@ -5,7 +5,7 @@
 {% block filtres %}
     <div class="filter-wrapper">
         <div class="dropdown toolbar-item">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownsorting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Années</button>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownsorting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ annee.year }}</button>
             <div id="list_annee" class="dropdown-menu" aria-labelledby="dropdownsorting">
                 {% for annee in annees %}
                     <a class="dropdown-item" href="{{ path('kpi_generaux_by_year_id', { 'id' : annee.id }) }}">{{ annee.year }}</a>
