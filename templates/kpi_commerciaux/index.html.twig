@@ -20,27 +20,18 @@
             <button class="btn btn-secondary dropdown-toggle" type="button" id="commercialList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ commercial.nom }}</button>
             <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="commercialList">
                 {% for c in commerciaux %}
-                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : c.id, 'year' : URLyear, 'month' : URLmonth }) }}">{{ c.nom }}</a>
+                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : c.id, 'year' : URLyear }) }}">{{ c.nom }}</a>
                 {% endfor %}
             </div>
         </div>
-
+    </div>
+    <div class="filter-wrapper">
         <div class="dropdown toolbar-item">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="monthList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if month %}{{ month }}{% else %}Tout{% endif %}</button>
-            <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="monthList">
-                <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : URLyear }) }}">Tout</a>
-                {% for m in monthList %}
-                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : URLyear, 'month' : m.month }) }}">{{ m.month }}</a>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="dropdown toolbar-item">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="yearList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if year %}{{ year }}{% else %}Tout{% endif %}</button>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="yearList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if year %}{{ year }}{% else %}Toutes les années{% endif %}</button>
             <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="yearList">
                 <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'month' : URLmonth }) }}">Tout</a>
                 {% for y in yearList %}
-                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : y.year, 'month' : URLmonth }) }}">{{ y.year }}</a>
+                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : y.year }) }}">{{ y.year }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -48,12 +39,12 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
+    <div class="row align-items-center">
         <div class="col-md-12 grid-margin">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-lg-2 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
                                     <h3 class="mb-0 font-weight-semibold">{{ commercial.nom }}</h3>
@@ -61,6 +52,16 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-1 col-md-6 mt-md-0 mt-4">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">{{ nbVentes }}</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Commande</h5>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-3 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
@@ -69,19 +70,20 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">{{ nbVentes }}</h3>
-                                    <h5 class="mb-0 font-weight-medium text-primary">Commande</h5>
+                                    <h3 class="mb-0 font-weight-semibold">{{ meilleureVente | number_format(2, ',', ' ') }}€</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Meilleure vente</h5>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">{{ meilleureVente | number_format(2, ',', ' ') }}€</h3>
-                                    <h5 class="mb-0 font-weight-medium text-primary">Meilleure vente</h5>
+                                    <h3 class="mb-0 font-weight-semibold">{{ venteMoyenne | number_format(2, ',', ' ') }}€</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Vente moyenne</h5>
                                 </div>
                             </div>
                         </div>
@@ -94,89 +96,46 @@
         <div class="col-md-8 grid-margin">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-0"></h4>
-                    <div class="d-flex align-items-center justify-content-between w-100">
-                        <h4 class="mb-0">{{ commercial.nom }}</h4>
-                    </div>
                     <canvas class="mt-4" height="100" id="performance_commercial-chart"></canvas>
+
+                    <h5 class="mb-0 font-weight-medium text-primary card-title">Chiffre d’affaire et objectif</h5>
                 </div>
             </div>
         </div>
-        {#<div class="col-md-4 grid-margin">#}
-            {#<div class="card">#}
-                {#<div class="card-body">#}
-                    {#<h4 class="card-title mb-0">Top Performer</h4>#}
-                    {#<div class="d-flex mt-3 py-2 border-bottom">#}
-                        {#<img class="img-sm rounded-circle" src="../assets/images/faces/face3.jpg" alt="profile image">#}
-                        {#<div class="wrapper ml-2">#}
-                            {#<p class="mb-n1 font-weight-semibold">Ray Douglas</p>#}
-                            {#<small>162543</small>#}
-                        {#</div>#}
-                        {#<small class="text-muted ml-auto">1 Hours ago</small>#}
-                    {#</div>#}
-                    {#<div class="d-flex py-2 border-bottom">#}
-                        {#<span class="img-sm rounded-circle bg-warning text-white text-avatar">OH</span>#}
-                        {#<div class="wrapper ml-2">#}
-                            {#<p class="mb-n1 font-weight-semibold">Ora Hill</p>#}
-                            {#<small>162543</small>#}
-                        {#</div>#}
-                        {#<small class="text-muted ml-auto">4 Hours ago</small>#}
-                    {#</div>#}
-                    {#<div class="d-flex py-2 border-bottom">#}
-                        {#<img class="img-sm rounded-circle" src="../assets/images/faces/face4.jpg" alt="profile image">#}
-                        {#<div class="wrapper ml-2">#}
-                            {#<p class="mb-n1 font-weight-semibold">Brian Dean</p>#}
-                            {#<small>162543</small>#}
-                        {#</div>#}
-                        {#<small class="text-muted ml-auto">4 Hours ago</small>#}
-                    {#</div>#}
-                    {#<div class="d-flex py-2 border-bottom">#}
-                        {#<img class="img-sm rounded-circle" src="../assets/images/faces/face4.jpg" alt="profile image">#}
-                        {#<div class="wrapper ml-2">#}
-                            {#<p class="mb-n1 font-weight-semibold">Brian Dean</p>#}
-                            {#<small>162543</small>#}
-                        {#</div>#}
-                        {#<small class="text-muted ml-auto">4 Hours ago</small>#}
-                    {#</div>#}
-                    {#<div class="d-flex pt-2">#}
-                        {#<span class="img-sm rounded-circle bg-success text-white text-avatar">OB</span>#}
-                        {#<div class="wrapper ml-2">#}
-                            {#<p class="mb-n1 font-weight-semibold">Olive Bridges</p>#}
-                            {#<small>162543</small>#}
-                        {#</div>#}
-                        {#<small class="text-muted ml-auto">7 Hours ago</small>#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
 
-        {#<div class="col-md-4 grid-margin stretch-card">#}
-            {#<div class="card">#}
-                {#<div class="card-body d-flex flex-column">#}
-                    {#<div class="wrapper">#}
-                        {#<h4 class="card-title mb-0">Net Profit Margin</h4>#}
-                        {#<p>Started collecting data from February 2019</p>#}
-                        {#<div class="mb-4" id="net-profit-legend"></div>#}
-                    {#</div>#}
-                    {#<canvas class="my-auto mx-auto" height="250" id="net-profit"></canvas>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
+        <div class="col-md-4 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body d-flex flex-column">
+                    <div class="wrapper">
+                        <div class="mb-4" id="net-profit-legend"></div>
+                    </div>
+                    {% if year %}
+                        <canvas class="my-auto mx-auto" height="250" id="net-profit"></canvas>
+                    {% else %}
+                        <p>Sélectionnez une année pour voir cet indicateur</p>
+                    {% endif %}
+                    <div class="wrapper">
+                        <h5 class="mb-0 mt-2 font-weight-medium text-primary card-title">Evolution des performances de vente</h5>
+                        <p class="text-primary">sur l'année {{ year }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title mb-4">Devis transformés</h1>
                     <div class="mt-n3 ml-auto" id="devis_transformes-chart"></div>
+                    <h5 class="mb-0 mt-2 font-weight-medium text-primary card-title">Taux de conversion des devis</h5>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title mb-4">Evolution</h1>
-                    <div class="mt-n3 ml-auto" id="evolution-chart"></div>
+                    <canvas class="mt-4" height="100" id="evolution-chart"></canvas>
+                    <h5 class="mb-0 mt-2 font-weight-medium text-primary card-title">Evolution du total des ventes</h5>
                 </div>
             </div>
         </div>
@@ -255,11 +214,100 @@
             });
         }
 
-        if ($('#evolution-chart').length) {
-            var MarketingChartCanvas2 = $("#evolution-chart").get(0).getContext("2d");
 
-            var MarketingChart2 = new Chart(MarketingChartCanvas2, {
+        if ($("#net-profit").length) {
+            var marksCanvas = document.getElementById("net-profit");
+            var marksData = {
+                labels: ["Jan", "Fev", "Mar", "Avr", "Mai", "Jui", "Jui", "Aou", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Ventes",
+                    backgroundColor: 'rgba(150, 77, 247,1)',
+                    borderColor: 'rgba(150, 77, 247,1)',
+                    borderWidth: 0,
+                    fill: true,
+                    radius: 0,
+                    pointRadius: 0,
+                    pointBorderWidth: 0,
+                    pointBackgroundColor: 'rgba(150, 77, 247,1)',
+                    pointHoverRadius: 10,
+                    pointHitRadius: 5,
+                    data: [{% for nbdevis in ventesMonth %}{{ nbdevis }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    lineTension: 0
+                },{
+                    label: "Devis",
+                    backgroundColor: 'rgba(88, 208, 222,0.8)',
+                    borderColor: 'rgba(88, 208, 222,0.8)',
+                    borderWidth: 0,
+                    fill: true,
+                    radius: 0,
+                    pointRadius: 0,
+                    pointBorderWidth: 0,
+                    pointBackgroundColor: 'rgba(88, 208, 222,0.8)',
+                    pointHoverRadius: 10,
+                    pointHitRadius: 5,
+                    data: [{% for nbdevis in devisMonth %}{{ nbdevis }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    lineTension: 0
+                }]
+            };
+
+
+            {% set max = 0 %}
+
+            {% for v in devisMonth %}
+                {% if v > max %}
+            {% set max = v %}
+                {% endif %}
+            {% endfor %}
+
+            var chartOptions = {
+                scale: {
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: {{ max + 2 }},
+                        display: true,
+                    },
+                    pointLabels: {
+                        fontSize: 14
+                    },
+                    angleLines: {
+                        color: '#e9ebf1'
+                    },
+                    gridLines: {
+                        color: "#e9ebf1"
+                    }
+                },
+                legend: false,
+                legendCallback: function (chart) {
+                    var text = [];
+                    text.push('<div class="chartjs-legend"><ul>');
+                    for (var i = 0; i < chart.data.datasets.length; i++) {
+                        text.push('<li>');
+                        text.push('<span style="background-color:' + chart.data.datasets[i].backgroundColor + '">' + '</span>');
+                        text.push(chart.data.datasets[i].label);
+                        text.push('</li>');
+                    }
+                    text.push('</ul></div>');
+                    return text.join("");
+                },
+            };
+
+            var radarChart = new Chart(marksCanvas, {
                 type: 'line',
+                data: marksData,
+                options: chartOptions
+            });
+            document.getElementById('net-profit-legend').innerHTML = radarChart.generateLegend();
+        }
+
+        if ($("#performance_commercial-chart").length) {
+            var MarketingChartCanvas = $("#performance_commercial-chart").get(0).getContext("2d");
+
+            var Marketing_data_1_1 = [{% for year in perfsPerYear %}{{ year.total }}{% if not loop.last %}, {% endif %}{% endfor %}];
+            var Marketing_data_1_2 = [{% for year in perfsPerYear %}{{ commercial.objectif }}{% if not loop.last %}, {% endif %}{% endfor %}];
+
+            var MarketingChart = new Chart(MarketingChartCanvas, {
+                type: 'bar',
                 data: {
                     labels: [{% for year in perfsPerYear %}"{{ year.year }}"{% if not loop.last %}, {% endif %}{% endfor %}],
                     datasets: [
@@ -269,20 +317,63 @@
                             borderColor: '#ff6361',
                             backgroundColor: '#ff6361',
                             borderWidth: 0,
+                            type: 'line',
                             order: 0,
-                            fill: false
+                            fill: false,
+                            lineTension: 0
                         },
                         {
                             label: 'Total des ventes',
                             data: Marketing_data_1_1,
                             backgroundColor: '#ffa600',
                             borderColor: '#ffa600',
-                            order: 1
+                            order: 1,
                         }
                     ]
                 }
             });
         }
+
+
+        if ($("#evolution-chart").length) {
+            var MarketingChartCanvas = $("#evolution-chart").get(0).getContext("2d");
+
+            var Marketing_data_1_1 = [{% spaceless %}
+                {% set count = 0 %}
+                {% for annee in evolutionVentes %}
+                    {% for valeur in annee %}
+                        {% set count = count+1 %}
+                        {{ valeur }}
+                        {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if not loop.last %}, {% endif %}
+                {% endfor %}
+
+                {% endspaceless %}];
+
+            var MarketingChart = new Chart(MarketingChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: [
+                    {% for annee in evolutionVentes %}
+                        {% for mois in annee %}
+                            {{ loop.index }},
+                        {% endfor %}
+                    {% endfor %}
+                    ],
+                    datasets: [
+                        {
+                            label: 'Total des ventes',
+                            data: Marketing_data_1_1,
+                            backgroundColor: 'rgba(150, 77, 247,1)',
+                            borderColor: 'rgba(150, 77, 247,1)',
+                            lineTension: 0
+                        }
+                    ]
+                }
+            });
+        }
+
 
     </script>
 {% endblock %}

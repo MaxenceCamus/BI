@@ -113,5 +113,34 @@ class DimensionOffreCommandeRepository extends ServiceEntityRepository
 
     }
 
+    public function getNombreDevisByMonth($id_commercial, $year = null, $month = null){
+        $nombre_devis_query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) as nombre_devis, o.month')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->groupBy('o.month')
+            ->orderBy('o.month', 'ASC')
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $nombre_devis_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        return $nombre_devis_query->getQuery()->getResult();
+    }
+    public function getNombreVenteByMonth($id_commercial, $year = null){
+        $nombre_vente_query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) as nombre_vente, o.month')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->andWhere("o.typeDC = 'C'")
+            ->groupBy('o.month')
+            ->orderBy('o.month', 'ASC')
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $nombre_vente_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        return $nombre_vente_query->getQuery()->getResult();
+    }
 
 }

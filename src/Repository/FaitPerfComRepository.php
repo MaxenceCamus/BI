@@ -40,6 +40,26 @@ class FaitPerfComRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getTotalVentesByMonth($id_commercial, $year = null){
+
+        $query = $this->createQueryBuilder('fpc')
+            ->select('fpc.total_vente')
+            ->addselect('fpc.month')
+            ->addSelect('fpc.year')
+            ->where('fpc.groupe_vendeur = :id_vendeur')
+            ->setParameter('id_vendeur', $id_commercial)
+            ->addOrderBy('fpc.year', 'ASC')
+            ->addOrderBy('fpc.month', 'ASC');
+
+        if($year !== null){
+            $query->andWhere('fpc.year = :year')
+                ->setParameter('year', $year);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+
     public function getCA($id_annee){
         return $this->createQueryBuilder('f')
             ->select('f.year, SUM(f.total_vente) as ca')

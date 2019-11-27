@@ -109,7 +109,7 @@ class FaitPerfCom
         return $this;
     }
 
-    public function getTemps(): ?dimensionTemps
+    public function getTemps(): ?DimensionTemps
     {
         return $this->temps;
     }

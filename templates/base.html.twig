@@ -30,10 +30,10 @@
             <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
                     <a class="navbar-brand brand-logo" href="{{ path('index') }}">
-                        <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" />
+                        <h4 class="text-light mt-3">Dashboard KPI</h4>
                     </a>
                     <a class="navbar-brand brand-logo-mini" href="{{ path('index') }}">
-                        <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
+                        <h4 class="text-light mt-3">Dashboard KPI</h4>
                     </a>
                 </div>
                 <div class="navbar-menu-wrapper d-flex align-items-center">
@@ -588,81 +588,6 @@
                                 data.datasets[1].data = data_4_2;
                                 salesChart.update();
                             });
-                        }
-                        if ($("#net-profit").length) {
-                            var marksCanvas = document.getElementById("net-profit");
-                            var marksData = {
-                                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-                                datasets: [{
-                                    label: "Sales",
-                                    backgroundColor: 'rgba(88, 208, 222,0.8)',
-                                    borderColor: 'rgba(88, 208, 222,0.8)',
-                                    borderWidth: 0,
-                                    fill: true,
-                                    radius: 0,
-                                    pointRadius: 0,
-                                    pointBorderWidth: 0,
-                                    pointBackgroundColor: 'rgba(88, 208, 222,0.8)',
-                                    pointHoverRadius: 10,
-                                    pointHitRadius: 5,
-                                    data: [54, 45, 60, 70, 54, 75, 60, 54]
-                                }, {
-                                    label: "Orders",
-                                    backgroundColor: 'rgba(150, 77, 247,1)',
-                                    borderColor: 'rgba(150, 77, 247,1)',
-                                    borderWidth: 0,
-                                    fill: true,
-                                    radius: 0,
-                                    pointRadius: 0,
-                                    pointBorderWidth: 0,
-                                    pointBackgroundColor: 'rgba(150, 77, 247,1)',
-                                    pointHoverRadius: 10,
-                                    pointHitRadius: 5,
-                                    data: [65, 75, 70, 80, 60, 80, 36, 60]
-                                }]
-                            };
-
-                            var chartOptions = {
-                                scale: {
-                                    ticks: {
-                                        beginAtZero: true,
-                                        min: 0,
-                                        max: 100,
-                                        stepSize: 20,
-                                        display: false,
-                                    },
-                                    pointLabels: {
-                                        fontSize: 14
-                                    },
-                                    angleLines: {
-                                        color: '#e9ebf1'
-                                    },
-                                    gridLines: {
-                                        color: "#e9ebf1"
-                                    }
-                                },
-                                legend: false,
-                                legendCallback: function (chart) {
-                                    var text = [];
-                                    text.push('<div class="chartjs-legend"><ul>');
-                                    for (var i = 0; i < chart.data.datasets.length; i++) {
-                                        console.log(chart.data.datasets[i]); // see what's inside the obj.
-                                        text.push('<li>');
-                                        text.push('<span style="background-color:' + chart.data.datasets[i].backgroundColor + '">' + '</span>');
-                                        text.push(chart.data.datasets[i].label);
-                                        text.push('</li>');
-                                    }
-                                    text.push('</ul></div>');
-                                    return text.join("");
-                                },
-                            };
-
-                            var radarChart = new Chart(marksCanvas, {
-                                type: 'radar',
-                                data: marksData,
-                                options: chartOptions
-                            });
-                            document.getElementById('net-profit-legend').innerHTML = radarChart.generateLegend();
                         }
                         if ($('#total-revenue').length) {
                             var ctx = document.getElementById('total-revenue').getContext("2d");
