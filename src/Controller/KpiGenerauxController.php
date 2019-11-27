@@ -32,8 +32,16 @@ class KpiGenerauxController extends AbstractController
         $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
         $valuebycountries = $this->getDoctrine()->getRepository(FaitPays::class)->findValuesByCountry($annee->getYear());
         $valuespipeline = $this->getDoctrine()->getRepository(FaitPipeline::class)->valuespipeline($annee->getYear());
-        $valuesPerfAllComm = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfAllVendeurByMonth(2015);
-        //dump($valuesPerfAllComm);die;
+        $valuesPerfAllComm = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfAllVendeurByMonth($annee->getYear());
+        $CA = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getCA($annee->getYear());
+        $FirstComm = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getCommercialFirst($annee->getYear());
+        $TopComm = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getTopFiveCommercial($annee->getYear());
+        $NbOffre = $this->getDoctrine()->getRepository(FaitPipeline::class)->TotalOffre($annee->getYear());
+        $NbDevis = $this->getDoctrine()->getRepository(FaitPipeline::class)->PercentDevis($annee->getYear());
+        $NbCmd = $this->getDoctrine()->getRepository(FaitPipeline::class)->PercentCmd($annee->getYear());
+
+        $tauxDevis = ($NbDevis[0]['devis']/$NbOffre[0]['offre'])*100;
+        $tauxCmd = ($NbCmd[0]['cmd']/$NbOffre[0]['offre'])*100;
 
         $code_pays = [
             "AF"=>0,
@@ -236,7 +244,12 @@ class KpiGenerauxController extends AbstractController
             'annees' => $annees,
             'annee' => $annee,
             'valuespipeline' => $valuespipeline,
-            '$valuesPerfAllComm' => $valuesPerfAllComm,
+            'valuesPerfAllComm' => $valuesPerfAllComm,
+            'CA' => $CA,
+            'firstComm' => $FirstComm,
+            'topComm' => $TopComm,
+            'tauxDevis' => $tauxDevis,
+            'tauxCmd' => $tauxCmd,
         ]);
     }
 }

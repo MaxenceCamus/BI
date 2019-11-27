@@ -23,10 +23,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">200 000 €</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ CA[0]['ca'] | number_format(2, ',', ' ') }} €</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">CA</h5>
                                 </div>
                                 <!--<div class="wrapper my-auto ml-auto ml-lg-4">
@@ -34,10 +34,10 @@
                                 </div>-->
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
+                        <div class="col-lg-2 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">30%</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ tauxDevis | number_format(2, ',', ' ') }}%</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">Devis</h5>
                                 </div>
                                 <!--<div class="wrapper my-auto ml-auto ml-lg-4">
@@ -48,7 +48,7 @@
                         <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">70%</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ tauxCmd | number_format(2, ',', ' ') }}%</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">Commandes</h5>
                                 </div>
                                 <!--<div class="wrapper my-auto ml-auto ml-lg-4">
@@ -59,9 +59,9 @@
                         <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">Jean Bidulle</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ firstComm[0]['nom'] }}</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">Meilleur Commercial</h5>
-                                    <p class="mb-0 text-muted">2019</p>
+                                    <p class="mb-0 text-muted">{{ firstComm[0]['year'] }}</p>
                                 </div>
                             </div>
                         </div>
@@ -69,40 +69,31 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 grid-margin">
+        <div class="col-md-8 grid-margin">
             <div class="card">
                 <div class="p-4 border-bottom bg-light">
                     <h4 class="card-title mb-0">Pipeline des Ventes</h4>
                 </div>
-                <div id="canvas-holder" style="width:100%">
+                <div id="canvas-holder" style="width:400px;margin-left: 30%;height:400px">
                     <canvas id="chart-area" height="250"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 grid-margin stretch-card">
+        <div class="col-md-4 grid-margin">
             <div class="card">
                 <div class="p-4 border-bottom bg-light">
-                    <h4 class="card-title mb-0">Evolution des Ventes</h4>
+                    <h4 class="card-title mb-0">Top 5 des Commerciaux</h4>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <div class="data-wrapper d-flex mt-2 mt-lg-0">
-                            <!--<div class="wrapper pr-5">
-                                <h5 class="mb-0">Total Cost</h5>
-                                <div class="d-flex align-items-center">
-                                    <h4 class="font-weight-semibold mb-0">15,263</h4>
-                                </div>
-                            </div>
-                            <div class="wrapper">
-                                <h5 class="mb-0">Total Revenue</h5>
-                                <div class="d-flex align-items-center">
-                                    <h4 class="font-weight-semibold mb-0">$753,098</h4>
-                                </div>
-                            </div>-->
+                <div class="card-body" style="padding-top: 0px;">
+                    {% for commercial in topComm %}
+                    <div class="d-flex mt-3 py-2 border-bottom">
+                        <!--<span class="img-sm rounded-circle bg-warning text-white text-avatar"></span>-->
+                        <div class="wrapper ml-2">
+                            <p class="mb-n1 font-weight-semibold">{{ commercial['nom'] }}</p>
+                            <small>{{ commercial['chiffre'] | number_format(2, ',', ' ') }} €</small>
                         </div>
-                        <div class="ml-lg-auto" id="sales-statistics-legend"></div>
                     </div>
-                    <canvas class="mt-5" height="120" id="sales-statistics-overview"></canvas>
+                    {% endfor %}
                 </div>
             </div>
         </div>

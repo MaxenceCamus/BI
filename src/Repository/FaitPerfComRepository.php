@@ -39,6 +39,58 @@ class FaitPerfComRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getCA($id_annee){
+        return $this->createQueryBuilder('f')
+            ->select('f.year, SUM(f.total_vente) as ca')
+            ->groupBy('f.year')
+            ->where('f.year = :id_year')
+            ->setParameter('id_year', $id_annee)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getCommercialFirst($id_annee){
+        return $this->createQueryBuilder('f')
+            ->select('f.year')
+            ->addSelect('c.nom')
+            ->addSelect('SUM(f.total_vente) as chiffre')
+            ->where('f.year = :id_year')
+            ->setParameter('id_year', $id_annee)
+            ->innerJoin('App\\Entity\\DimensionCommercial', 'c')
+            ->andWhere('c.id = f.groupe_vendeur')
+            ->groupBy('f.groupe_vendeur')
+            ->orderBy('SUM(f.total_vente)','DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+    public function getTopFiveCommercial($id_annee){
+        /*return $this->createQueryBuilder('f')
+            ->select('f.year, f.groupe_vendeur, SUM(f.total_vente) as chiffre')//c.nom
+            ->where('f.year = :id_year')
+            ->setParameter('id_year', $id_annee)
+            ->innerJoin('f', 'groupeVendeur', 'c', 'f.groupeVendeur = c.id')
+            //->innerJoin('f.groupeVendeur','c')
+            ->groupBy('f.groupe_vendeur')
+            ->orderBy('SUM(f.total_vente)','DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();*/
+        return $this->createQueryBuilder('f')
+            ->select('f.year')
+            ->addSelect('c.nom')
+            ->addSelect('SUM(f.total_vente) as chiffre')
+            ->where('f.year = :id_year')
+            ->setParameter('id_year', $id_annee)
+            ->innerJoin('App\\Entity\\DimensionCommercial', 'c')
+            ->andWhere('c.id = f.groupe_vendeur')
+            ->groupBy('f.groupe_vendeur')
+            ->orderBy('SUM(f.total_vente)','DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return FaitPerfCom[] Returns an array of FaitPerfCom objects
     //  */

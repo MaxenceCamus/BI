@@ -19,13 +19,6 @@ class FaitPaysRepository extends ServiceEntityRepository
         parent::__construct($registry, FaitPays::class);
     }
 
-    public function test(){
-        $this->createQueryBuilder('p')
-            ->select('p.id, p.total_valeur')
-            ->innerJoin('p.pays_id', 'pays')
-            ->andWhere('pays = 1');
-    }
-
     // /**
     //  * @return FaitPays[] Returns an array of FaitPays objects
     //  */
@@ -58,7 +51,7 @@ class FaitPaysRepository extends ServiceEntityRepository
     public function findValuesByCountry($year)
     {
         return $this->createQueryBuilder('p')
-            ->addSelect('p.total_valeur','pays.code_pays')
+            ->select('SUM(p.total_valeur) as total_valeur, pays.code_pays')
             ->andWhere('p.year = :y')
             ->setParameter('y', $year)
             ->innerJoin('p.pays','pays')

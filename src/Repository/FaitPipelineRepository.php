@@ -57,4 +57,33 @@ class FaitPipelineRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function TotalOffre($year){
+        return $this->createQueryBuilder('o')
+            ->addSelect('Count(o.prb) as offre')
+            ->where('o.year = :y')
+            ->setParameter('y', $year)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function PercentDevis($year){
+
+        return $this->createQueryBuilder('o')
+            ->addSelect('Count(o.prb) as devis')
+            ->where('o.prb<100 AND o.year = :y')
+            ->setParameter('y', $year)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function PercentCmd($year){
+        return $this->createQueryBuilder('o')
+            ->addSelect('Count(o.prb) as cmd')
+            ->where('o.prb=100 AND o.year = :y')
+            ->setParameter('y', $year)
+            ->getQuery()
+            ->getResult();
+    }
 }
