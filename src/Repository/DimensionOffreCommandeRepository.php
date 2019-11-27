@@ -55,6 +55,24 @@ class DimensionOffreCommandeRepository extends ServiceEntityRepository
         return $total_commande_query->getQuery()->getSingleScalarResult();
     }
 
+    public function getMeilleureVente($id_commercial, $year=null, $month = null){
+        $total_commande_query = $this->createQueryBuilder('o')
+            ->select('MAX(o.valeur_nette)')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->andWhere("o.typeDC = 'C'")
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $total_commande_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        if($month !== null){
+            $total_commande_query->andWhere("o.month = :month")
+                ->setParameter('month', $month);
+        }
+        return $total_commande_query->getQuery()->getSingleScalarResult();
+    }
+
     public function getTauxConversion($id_commercial, $year = null, $month = null){
         $nombre_offres_query = $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')

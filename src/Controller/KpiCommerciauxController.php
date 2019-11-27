@@ -48,14 +48,10 @@ class KpiCommerciauxController extends AbstractController
 
         $perfsPerYear = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfVendeurByYear($commercial->getId());
 
-        $offres = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->findBy(['groupe_vendeur' => $commercial->getId()]);
-        $commandes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->findBy(['groupe_vendeur' => $commercial->getId(), 'prb' => '100']);
-
-
         $taux_trans = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTauxConversion($commercial->getId(), $year, $month);
-
         $nb_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getNombreVentes($commercial->getId(), $year, $month);
         $total_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTotalVentes($commercial->getId(), $year, $month);
+        $meilleure_vente = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getMeilleureVente($commercial->getId(), $year, $month);
 
 
         return $this->render('kpi_commerciaux/index.html.twig', [
@@ -68,7 +64,8 @@ class KpiCommerciauxController extends AbstractController
             'nbVentes' => $nb_ventes,
             'totalVentes' => $total_ventes,
             'yearList' => $yearsList,
-            'monthList' => $monthList
+            'monthList' => $monthList,
+            'meilleureVente' => $meilleure_vente
         ]);
     }
 }

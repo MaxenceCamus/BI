@@ -53,7 +53,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
                                     <h3 class="mb-0 font-weight-semibold">{{ commercial.nom }}</h3>
@@ -61,15 +61,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
                                     <h3 class="mb-0 font-weight-semibold">{{ totalVentes | number_format(2, ',', ' ') }}€</h3>
-                                    <h5 class="mb-0 font-weight-medium text-primary">Vente</h5>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Total des ventes</h5>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
+                        <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
                                     <h3 class="mb-0 font-weight-semibold">{{ nbVentes }}</h3>
@@ -77,14 +77,14 @@
                                 </div>
                             </div>
                         </div>
-                        {#<div class="col-lg-4 col-md-6 mt-md-0 mt-4">#}
-                            {#<div class="d-flex">#}
-                                {#<div class="wrapper">#}
-                                    {#<h3 class="mb-0 font-weight-semibold">30%</h3>#}
-                                    {#<h5 class="mb-0 font-weight-medium text-primary">Ratio Devis/Commandes</h5>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
+                        <div class="col-lg-3 col-md-6 mt-md-0 mt-4">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">{{ meilleureVente | number_format(2, ',', ' ') }}€</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">Meilleure vente</h5>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,13 +164,19 @@
         {#</div>#}
 
         <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title mb-4">Devis transformés</h1>
                     <div class="mt-n3 ml-auto" id="devis_transformes-chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title mb-4">Evolution</h1>
+                    <div class="mt-n3 ml-auto" id="evolution-chart"></div>
                 </div>
             </div>
         </div>
@@ -248,5 +254,35 @@
                 counter: true
             });
         }
+
+        if ($('#evolution-chart').length) {
+            var MarketingChartCanvas2 = $("#evolution-chart").get(0).getContext("2d");
+
+            var MarketingChart2 = new Chart(MarketingChartCanvas2, {
+                type: 'line',
+                data: {
+                    labels: [{% for year in perfsPerYear %}"{{ year.year }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+                    datasets: [
+                        {
+                            label: 'Objectif',
+                            data: Marketing_data_1_2,
+                            borderColor: '#ff6361',
+                            backgroundColor: '#ff6361',
+                            borderWidth: 0,
+                            order: 0,
+                            fill: false
+                        },
+                        {
+                            label: 'Total des ventes',
+                            data: Marketing_data_1_1,
+                            backgroundColor: '#ffa600',
+                            borderColor: '#ffa600',
+                            order: 1
+                        }
+                    ]
+                }
+            });
+        }
+
     </script>
 {% endblock %}
