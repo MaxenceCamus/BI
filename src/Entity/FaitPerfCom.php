@@ -37,7 +37,7 @@ class FaitPerfCom
     private $month;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\dimensionTemps")
+     * @ORM\ManyToOne(targetEntity="App\Entity\DimensionTemps")
      */
     private $temps;
 

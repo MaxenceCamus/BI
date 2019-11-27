@@ -32,7 +32,7 @@ class FaitPays
     private $month;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\dimensionPays")
+     * @ORM\ManyToOne(targetEntity="App\Entity\DimensionPays")
      */
     private $pays;
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DimensionTemps;
 use App\Entity\FaitPays;
+use App\Entity\FaitPerfCom;
 use App\Entity\FaitPipeline;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +32,8 @@ class KpiGenerauxController extends AbstractController
         $annees = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
         $valuebycountries = $this->getDoctrine()->getRepository(FaitPays::class)->findValuesByCountry($annee->getYear());
         $valuespipeline = $this->getDoctrine()->getRepository(FaitPipeline::class)->valuespipeline($annee->getYear());
-//        dump($valuespipeline);die;
+        $valuesPerfAllComm = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfAllVendeurByMonth(2015);
+        //dump($valuesPerfAllComm);die;
 
         $code_pays = [
             "AF"=>0,
@@ -217,17 +219,24 @@ class KpiGenerauxController extends AbstractController
             "ZM"=>0,
             "ZW"=>0
         ];
-
+        $top3_countries = array();
         foreach ($valuebycountries as $valuebycountry) {
             $code_pays[$valuebycountry['code_pays']] = $valuebycountry['total_valeur'];
         }
 
+        /*arsort($code_pays);
+        for($i=0;$i<3;$i++){
+            $top3_countries[pos(key($code_pays))] = pos($code_pays));
+            next($code_pays);
+        }
+        dump($top3_countries);die;*/
         return $this->render('kpi_generaux/index.html.twig', [
             'controller_name' => 'KpiGenerauxController',
             'valuebycountries' => $code_pays,
             'annees' => $annees,
             'annee' => $annee,
             'valuespipeline' => $valuespipeline,
+            '$valuesPerfAllComm' => $valuesPerfAllComm,
         ]);
     }
 }

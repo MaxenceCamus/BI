@@ -29,6 +29,16 @@ class FaitPerfComRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getPerfAllVendeurByMonth($id_annee){
+        return $this->createQueryBuilder('f')
+            ->groupBy('f.month', 'f.groupe_vendeur')
+            ->where('f.year = :id_year')
+            ->setParameter('id_year', $id_annee)
+            ->orderBy('f.month')
+            ->orderBy('f.groupe_vendeur')
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return FaitPerfCom[] Returns an array of FaitPerfCom objects
     //  */
