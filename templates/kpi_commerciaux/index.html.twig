@@ -1,14 +1,46 @@
 {% extends 'base.html.twig' %}
 
+{% if year is null %}
+    {% set URLyear = "all" %}
+{% else %}
+    {% set URLyear = year %}
+{% endif %}
+
+{% if month is null %}
+    {% set URLmonth = "all" %}
+{% else %}
+    {% set URLmonth = month %}
+{% endif %}
+
 {% block title %}Indicateurs des commerciaux - {% endblock %}
 
 {% block filtres %}
     <div class="filter-wrapper">
         <div class="dropdown toolbar-item">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownsorting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ commercial.nom }}</button>
-            <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="dropdownsorting">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="commercialList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ commercial.nom }}</button>
+            <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="commercialList">
                 {% for c in commerciaux %}
-                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : c.id }) }}">{{ c.nom }}</a>
+                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : c.id, 'year' : URLyear, 'month' : URLmonth }) }}">{{ c.nom }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="dropdown toolbar-item">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="monthList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if month %}{{ month }}{% else %}Tout{% endif %}</button>
+            <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="monthList">
+                <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : URLyear }) }}">Tout</a>
+                {% for m in monthList %}
+                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : URLyear, 'month' : m.month }) }}">{{ m.month }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="dropdown toolbar-item">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="yearList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if year %}{{ year }}{% else %}Tout{% endif %}</button>
+            <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="yearList">
+                <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'month' : URLmonth }) }}">Tout</a>
+                {% for y in yearList %}
+                    <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : y.year, 'month' : URLmonth }) }}">{{ y.year }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -24,7 +56,15 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">32 451 €</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ commercial.nom }}</h3>
+                                    <h5 class="mb-0 font-weight-medium text-primary">{{ month }}{% if month %} / {% endif %}{{ year }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="d-flex">
+                                <div class="wrapper">
+                                    <h3 class="mb-0 font-weight-semibold">{{ totalVentes | number_format(2, ',', ' ') }}€</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">Vente</h5>
                                 </div>
                             </div>
@@ -32,19 +72,19 @@
                         <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
                             <div class="d-flex">
                                 <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">100</h3>
+                                    <h3 class="mb-0 font-weight-semibold">{{ nbVentes }}</h3>
                                     <h5 class="mb-0 font-weight-medium text-primary">Commande</h5>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
-                            <div class="d-flex">
-                                <div class="wrapper">
-                                    <h3 class="mb-0 font-weight-semibold">30%</h3>
-                                    <h5 class="mb-0 font-weight-medium text-primary">Ratio Devis/Commandes</h5>
-                                </div>
-                            </div>
-                        </div>
+                        {#<div class="col-lg-4 col-md-6 mt-md-0 mt-4">#}
+                            {#<div class="d-flex">#}
+                                {#<div class="wrapper">#}
+                                    {#<h3 class="mb-0 font-weight-semibold">30%</h3>#}
+                                    {#<h5 class="mb-0 font-weight-medium text-primary">Ratio Devis/Commandes</h5>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
                     </div>
                 </div>
             </div>
@@ -56,12 +96,7 @@
                 <div class="card-body">
                     <h4 class="card-title mb-0"></h4>
                     <div class="d-flex align-items-center justify-content-between w-100">
-                        <p class="mb-0">Performance du commercial : {{ commercial.nom }}</p>
-                    </div>
-                    <div class="d-flex align-items-end">
-                        <h3 class="mb-0 font-weight-semibold">$36,2531.00</h3>
-                        <p class="mb-0 font-weight-medium mr-2 ml-2 mb-1">USD</p>
-                        <p class="mb-0 text-success font-weight-semibold mb-1">(+1.37%)</p>
+                        <h4 class="mb-0">{{ commercial.nom }}</h4>
                     </div>
                     <canvas class="mt-4" height="100" id="performance_commercial-chart"></canvas>
                 </div>
@@ -171,72 +206,29 @@
                     labels: [{% for year in perfsPerYear %}"{{ year.year }}"{% if not loop.last %}, {% endif %}{% endfor %}],
                     datasets: [
                         {
-                        label: 'Total des ventes',
-                        data: Marketing_data_1_1,
-                        backgroundColor: '#ffa600',
-                        order: 1
-                    },{
-                        label: 'Objectif',
-                        data: Marketing_data_1_2,
-                        borderColor: '#ff6361',
-                        borderWidth: 0,
-                        type: 'line',
-                        order: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    layout: {
-                        padding: {
-                            left: 0,
-                            right: 0,
-                            top: 20,
-                            bottom: 0
+                            label: 'Objectif',
+                            data: Marketing_data_1_2,
+                            borderColor: '#ff6361',
+                            backgroundColor: '#ff6361',
+                            borderWidth: 0,
+                            type: 'line',
+                            order: 0,
+                            fill: false
+                        },
+                        {
+                            label: 'Total des ventes',
+                            data: Marketing_data_1_1,
+                            backgroundColor: '#ffa600',
+                            borderColor: '#ffa600',
+                            order: 1
                         }
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                max: {{ max }},
-                                display: true,
-                                beginAtZero: true,
-                                fontColor: "#212529",
-                                stepSize: 500000,
-                                valueFormatString: "$#,###,#0",
-                            },
-                            gridLines: {
-                                display: false,
-                            }
-                        }],
-                        xAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: true,
-                                fontColor: "#212529"
-                            },
-                            gridLines: {
-                                color: "#e9ebf1",
-                                display: true
-                            },
-                            barPercentage: 0.2
-                        }]
-                    },
-                    legend: {
-                        display: false
-                    },
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    }
+                    ]
                 }
             });
         }
 
         if ($('#devis_transformes-chart').length) {
-            var g3 = new JustGage({
+            new JustGage({
                 id: 'devis_transformes-chart',
                 value: {{ taux_trans }},
                 min: 0,

@@ -19,32 +19,81 @@ class DimensionOffreCommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, DimensionOffreCommande::class);
     }
 
-    // /**
-    //  * @return DimensionOffreCommande[] Returns an array of DimensionOffreCommande objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function getNombreVentes($id_commercial, $year=null, $month = null){
+        $nombre_commandes_query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->andWhere("o.typeDC = 'C'")
+            ->setParameter('id_commercial', $id_commercial);
 
-    /*
-    public function findOneBySomeField($value): ?DimensionOffreCommande
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if($year !== null){
+            $nombre_commandes_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        if($month !== null){
+            $nombre_commandes_query->andWhere("o.month = :month")
+                ->setParameter('month', $month);
+        }
+        return $nombre_commandes_query->getQuery()->getSingleScalarResult();
     }
-    */
+
+    public function getTotalVentes($id_commercial, $year=null, $month = null){
+        $total_commande_query = $this->createQueryBuilder('o')
+            ->select('SUM(o.valeur_nette)')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->andWhere("o.typeDC = 'C'")
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $total_commande_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        if($month !== null){
+            $total_commande_query->andWhere("o.month = :month")
+                ->setParameter('month', $month);
+        }
+        return $total_commande_query->getQuery()->getSingleScalarResult();
+    }
+
+    public function getTauxConversion($id_commercial, $year = null, $month = null){
+        $nombre_offres_query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.groupe_vendeur = :id_commercial')
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $nombre_offres_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        if($month !== null){
+            $nombre_offres_query->andWhere("o.month = :month")
+                ->setParameter('month', $month);
+        }
+        $nombre_offres = $nombre_offres_query->getQuery()->getSingleScalarResult();
+
+        $nombre_commandes_query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->andWhere('o.groupe_vendeur = :id_commercial')
+            ->andWhere('o.prb = 100')
+            ->setParameter('id_commercial', $id_commercial);
+
+        if($year !== null){
+            $nombre_commandes_query->andWhere("o.year = :year")
+                ->setParameter('year', $year);
+        }
+        if($month !== null){
+            $nombre_commandes_query->andWhere("o.month = :month")
+                ->setParameter('month', $month);
+        }
+        $nombre_commandes = $nombre_commandes_query->getQuery()->getSingleScalarResult();
+
+        if($nombre_offres > 0){
+            return ($nombre_commandes * 100 ) / $nombre_offres;
+        }else{
+            return 0;
+        }
+
+    }
+
+
 }

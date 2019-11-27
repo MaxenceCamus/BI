@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DimensionCommercial;
 use App\Entity\DimensionOffreCommande;
+use App\Entity\DimensionTemps;
 use App\Entity\FaitPerfCom;
 use ContainerAuDTsQF\srcApp_KernelDevDebugContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,23 @@ class KpiCommerciauxController extends AbstractController
     }
 
     /**
-     * @Route("/kpi/commerciaux/{id}/", name="kpi_commerciaux_by_id")
+     * @Route("/kpi/commerciaux/{id}/{year}/{month}/",
+     *     name="kpi_commerciaux_by_id",
+     *     defaults={"year"="all", "month"="all"}
+     *     )
      */
-    public function commercial($id)
+    public function commercial($id, $year = null, $month = null)
     {
+        if($year == 'all'){
+            $year = null;
+        }
+        if($month == 'all'){
+            $month = null;
+        }
+
+        $yearsList = $this->getDoctrine()->getRepository(DimensionTemps::class)->yearDistinct();
+        $monthList = $this->getDoctrine()->getRepository(DimensionTemps::class)->monthDistinct();
+
         $commerciaux = $this->getDoctrine()->getRepository(DimensionCommercial::class)->findBy([], ['nom' => 'ASC']);
         $commercial = $this->getDoctrine()->getRepository(DimensionCommercial::class)->find($id);
 
@@ -37,17 +51,24 @@ class KpiCommerciauxController extends AbstractController
         $offres = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->findBy(['groupe_vendeur' => $commercial->getId()]);
         $commandes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->findBy(['groupe_vendeur' => $commercial->getId(), 'prb' => '100']);
 
-        dump(count($offres));
-        dump(count($commandes));
 
-        $taux_trans = (count($commandes) * 100 ) / count($offres);
+        $taux_trans = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTauxConversion($commercial->getId(), $year, $month);
+
+        $nb_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getNombreVentes($commercial->getId(), $year, $month);
+        $total_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTotalVentes($commercial->getId(), $year, $month);
 
 
         return $this->render('kpi_commerciaux/index.html.twig', [
             'commerciaux' => $commerciaux,
             'commercial' => $commercial,
+            'month' => $month,
+            'year' => $year,
             'perfsPerYear' => $perfsPerYear,
-            'taux_trans' => $taux_trans
+            'taux_trans' => $taux_trans,
+            'nbVentes' => $nb_ventes,
+            'totalVentes' => $total_ventes,
+            'yearList' => $yearsList,
+            'monthList' => $monthList
         ]);
     }
 }

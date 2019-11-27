@@ -19,41 +19,18 @@ class DimensionTempsRepository extends ServiceEntityRepository
         parent::__construct($registry, DimensionTemps::class);
     }
 
-    // /**
-    //  * @return DimensionTemps[] Returns an array of DimensionTemps objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?DimensionTemps
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     public function yearDistinct()
     {
         return $this->createQueryBuilder('p')
             ->groupBy('p.year')
             ->orderBy('p.year', 'desc')
-            ->getQuery()
-            ->execute();
+            ->getQuery()->getResult();
+    }
+    public function monthDistinct()
+    {
+        return $this->createQueryBuilder('p')
+            ->groupBy('p.month')
+            ->orderBy('p.month', 'asc')
+            ->getQuery()->getResult();
     }
 }
