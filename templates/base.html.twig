@@ -457,6 +457,9 @@
                             var gradientStrokeFill_2 = salesChartCanvas.createLinearGradient(0, 0, 0, 400);
                             gradientStrokeFill_2.addColorStop(1, 'rgba(255, 255, 255, 0.01)');
                             gradientStrokeFill_2.addColorStop(0, '#14c671');
+                            var gradientStrokeFill_3 = salesChartCanvas.createLinearGradient(0, 0, 0, 400);
+                            gradientStrokeFill_3.addColorStop(1, 'rgba(250, 255, 255, 0.01)');
+                            gradientStrokeFill_3.addColorStop(0, '#14c660');
                             var data_1_1 = [60, 75, 65, 130, 130, 145, 110, 145, 155, 149, 170];
                             var data_1_2 = [0, 25, 20, 40, 70, 52, 49, 90, 70, 94, 110, 135];
 
@@ -469,7 +472,7 @@
                             var data_4_1 = [130, 145, 65, 130, 75, 145, 149, 170, 110, 155, 60];
                             var data_4_2 = [0, 70, 90, 25, 40, 20, 94, 110, 135, 70, 49, 52];
                             var areaData = {
-                                labels: ["Jan 1", "Jan 7", "Jan 14", "Jan 21", "Jan 28", "Feb 4", "Feb 11", "Feb 18"],
+                                labels: ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre","Decembre"],
                                 datasets: [{
                                     label: 'Revenue',
                                     data: data_1_1,
@@ -481,6 +484,12 @@
                                     data: data_1_2,
                                     borderColor: successColor,
                                     backgroundColor: gradientStrokeFill_2,
+                                    borderWidth: 2
+                                }, {
+                                    label: 'Sales',
+                                    data: data_2_2,
+                                    borderColor: successColor,
+                                    backgroundColor: gradientStrokeFill_3,
                                     borderWidth: 2
                                 }]
                             };
