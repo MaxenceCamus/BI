@@ -47,19 +47,20 @@ class KpiCommerciauxController extends AbstractController
 
         $perfsPerYear = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getPerfVendeurByYear($commercial->getId());
 
-        $taux_trans = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTauxConversion($commercial->getId(), $year, $month);
+            $taux_trans = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTauxConversion($commercial->getId(), $year, $month);
 
         $nb_devis_month = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getNombreDevisByMonth($commercial->getId(), $year);
         $nb_vente_month = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getNombreVenteByMonth($commercial->getId(), $year);
 
         $nb_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getNombreVentes($commercial->getId(), $year, $month);
+
         $total_ventes = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getTotalVentes($commercial->getId(), $year, $month);
+
         $meilleure_vente = $this->getDoctrine()->getRepository(DimensionOffreCommande::class)->getMeilleureVente($commercial->getId(), $year, $month);
 
         $total_ventes_by_month = $this->getDoctrine()->getRepository(FaitPerfCom::class)->getTotalVentesByMonth($commercial->getId(), $year, $month);
 
         $array_evolution_vente = [];
-
         $t = 0;
         foreach ($total_ventes_by_month as $tvmonth){
             $y = intval($tvmonth['year']);
@@ -92,9 +93,9 @@ class KpiCommerciauxController extends AbstractController
             ksort($aev);
             $array_evolution_vente[$key] = $aev;
         }
+        $array_final = [];
 
-        foreach ($array_evolution_vente as $aev){
-            dump($aev);
+        foreach ($array_evolution_vente as $key=>$aev){
             for ($i = 1; $i <= 12; $i++){
                 if($aev[$i] == 0){
                     $aev[$i] = $lastval;
@@ -102,6 +103,7 @@ class KpiCommerciauxController extends AbstractController
                     $lastval = $aev[$i];
                 }
             }
+            $array_final[$key] = $aev;
             $array_evolution_vente[$key] = $aev;
         }
 
@@ -123,8 +125,8 @@ class KpiCommerciauxController extends AbstractController
         }
 
         for ($i = 1; $i <= 12; $i++){
-            if(!isset($nb_devis_month[$i])){
-                $nb_devis_month[$i] = 0;
+            if(!isset($array_devis_month[$i])){
+                $array_devis_month[$i] = 0;
             }
         }
 

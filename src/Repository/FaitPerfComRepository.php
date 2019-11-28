@@ -111,6 +111,8 @@ class FaitPerfComRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
     // /**
     //  * @return FaitPerfCom[] Returns an array of FaitPerfCom objects
     //  */

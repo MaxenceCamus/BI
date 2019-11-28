@@ -71,19 +71,22 @@
         </div>
         <div class="col-md-8 grid-margin">
             <div class="card">
-                <div class="p-4 border-bottom bg-light">
-                    <h4 class="card-title mb-0">Pipeline des Ventes</h4>
-                </div>
+                {#<div class="p-4 border-bottom bg-light">#}
+                    {#<h4 class="card-title mb-0">Pipeline des Ventes</h4>#}
+                {#</div>#}
                 <div id="canvas-holder" style="width:400px;margin-left: 30%;height:400px">
                     <canvas id="chart-area" height="250"></canvas>
+                </div>
+                <div class="p-4 border-top bg-light">
+                    <h4 class="text-info card-title mb-0">Pipeline des Ventes</h4>
                 </div>
             </div>
         </div>
         <div class="col-md-4 grid-margin">
             <div class="card">
-                <div class="p-4 border-bottom bg-light">
-                    <h4 class="card-title mb-0">Top 5 des Commerciaux</h4>
-                </div>
+                {#<div class="p-4 border-bottom bg-light">#}
+                    {#<h4 class="card-title mb-0">Top 5 des Commerciaux</h4>#}
+                {#</div>#}
                 <div class="card-body" style="padding-top: 0px;">
                     {% for commercial in topComm %}
                     <div class="d-flex mt-3 py-2 border-bottom">
@@ -95,13 +98,16 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="p-4 border-top bg-light">
+                    <h4 class="text-info card-title mb-0">Top 5 des Commerciaux</h4>
+                </div>
             </div>
         </div>
         <div class="col-md-12 grid-margin">
             <div class="card">
-                <div class="p-4 border-bottom bg-light">
-                    <h4 class="card-title mb-0">Vente dans le monde</h4>
-                </div>
+                {#<div class="p-4 border-bottom bg-light">#}
+                    {#<h4 class="card-title mb-0">Vente dans le monde</h4>#}
+                {#</div>#}
                 <div class="card-body" style="height:400px">
                     <div id="dashboard-vmap" class="vector-map" style="height:300px"></div>
                     <!--<div class="wrapper">
@@ -113,6 +119,9 @@
                             </div>
                         </div>
                     </div>-->
+                </div>
+                <div class="p-4 border-top bg-light">
+                    <h4 class="text-info card-title mb-0">Vente dans le monde</h4>
                 </div>
             </div>
         </div>

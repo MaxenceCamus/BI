@@ -92,7 +92,7 @@ class DimensionOffreCommandeRepository extends ServiceEntityRepository
         $nombre_commandes_query = $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
             ->andWhere('o.groupe_vendeur = :id_commercial')
-            ->andWhere('o.prb = 100')
+            ->andWhere("o.typeDC = 'C'")
             ->setParameter('id_commercial', $id_commercial);
 
         if($year !== null){
@@ -127,6 +127,7 @@ class DimensionOffreCommandeRepository extends ServiceEntityRepository
         }
         return $nombre_devis_query->getQuery()->getResult();
     }
+
     public function getNombreVenteByMonth($id_commercial, $year = null){
         $nombre_vente_query = $this->createQueryBuilder('o')
             ->select('COUNT(o.id) as nombre_vente, o.month')

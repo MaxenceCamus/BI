@@ -29,7 +29,7 @@
         <div class="dropdown toolbar-item">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="yearList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if year %}{{ year }}{% else %}Toutes les années{% endif %}</button>
             <div id="list_commerciaux" class="dropdown-menu" aria-labelledby="yearList">
-                <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'month' : URLmonth }) }}">Tout</a>
+                <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id }) }}">Tout</a>
                 {% for y in yearList %}
                     <a class="dropdown-item" href="{{ path('kpi_commerciaux_by_id', { 'id' : commercial.id, 'year' : y.year }) }}">{{ y.year }}</a>
                 {% endfor %}
@@ -91,11 +91,11 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="col-md-8 grid-margin">
+    </div>
+    <div class="row">
+        <div class="col-md-8 grid-margin stretch-card">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body d-flex align-items-end">
                     <canvas class="mt-4" height="100" id="performance_commercial-chart"></canvas>
                 </div>
                 <div class="p-4 border-top bg-light">
@@ -106,28 +106,31 @@
 
         <div class="col-md-4 grid-margin stretch-card">
             <div class="card">
-                <div class="card-body d-flex flex-column">
-                    {% if year %}
+                {% if year %}
+                    <div class="card-body d-flex flex-column justify-content-end">
                         <div class="wrapper">
                             <div class="mb-4" id="net-profit-legend"></div>
                         </div>
                         <canvas class="my-auto mx-auto" height="250" id="net-profit"></canvas>
-                    {% else %}
+                    </div>
+                {% else %}
+                    <div class="card-body d-flex flex align-items-center">
                         <div class="p-5">
                             <h5 class="text-danger mb-0">Sélectionnez une année pour voir cet indicateur</h5>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
                 <div class="p-4 border-top bg-light">
                     <h4 class="text-info card-title mb-0">Evolution des performances de vente sur l'année {{ year }}</h4>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-4 grid-margin stretch-card">
             <div class="card">
-                <div class="card-body">
-                    <div class="mt-n3 ml-auto" id="devis_transformes-chart"></div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <div class="mt-n3" id="devis_transformes-chart"></div>
                 </div>
                 <div class="p-4 border-top bg-light">
                     <h4 class="text-info card-title mb-0">Taux de conversion des devis</h4>
@@ -135,7 +138,7 @@
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-8 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <canvas class="mt-4" height="100" id="evolution-chart"></canvas>
